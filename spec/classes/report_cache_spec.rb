@@ -117,7 +117,7 @@ describe Saulabs::Reportable::ReportCache do
       end.should raise_error(ArgumentError)
     end
 
-    it 'sould start a transaction' do
+    it 'should start a transaction' do
       Saulabs::Reportable::ReportCache.should_receive(:transaction)
 
       Saulabs::Reportable::ReportCache.process(@report, @report.options) {}
@@ -276,19 +276,19 @@ describe Saulabs::Reportable::ReportCache do
       end
     end
   end
-  
+
   describe '.serialize_conditions' do
-    
+
     it 'should serialize a conditions array correctly' do
       result = Saulabs::Reportable::ReportCache.send(:serialize_conditions, ['active = ? AND gender = ?', true, 'male'])
       result.should eql('active = ? AND gender = ?truemale')
     end
-    
+
     it 'should serialize a conditions hash correctly' do
       result = Saulabs::Reportable::ReportCache.send(:serialize_conditions, { :gender => 'male', :active => true })
       result.should eql('activetruegendermale')
     end
-    
+
   end
 
   describe '.prepare_result' do

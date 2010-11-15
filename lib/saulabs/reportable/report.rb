@@ -120,13 +120,14 @@ module Saulabs
             :conditions => conditions,
             :group      => options[:grouping].to_sql(@date_column),
             :order      => "#{options[:grouping].to_sql(@date_column)} ASC",
-            :limit      => options[:limit]
+            :limit      => options[:limit],
+            :joins      => options[:joins]
           )
         end
 
         def setup_conditions(begin_at, end_at, custom_conditions = [])
           conditions = [@klass.send(:sanitize_sql_for_conditions, custom_conditions) || '']
-          conditions[0] += "#{(conditions[0].blank? ? '' : ' AND ')}#{ActiveRecord::Base.connection.quote_table_name(@klass.table_name)}.#{ActiveRecord::Base.connection.quote_column_name(@date_column.to_s)} "
+          conditions[0] += "#{(conditions[0].blank? ? '' : ' AND ')}#{@date_column.to_s} "
           conditions[0] += if begin_at && end_at
             'BETWEEN ? AND ?'
           elsif begin_at
@@ -145,7 +146,7 @@ module Saulabs
           case context
             when :initialize
               options.each_key do |k|
-                raise ArgumentError.new("Invalid option #{k}!") unless [:limit, :aggregation, :grouping, :date_column, :value_column, :conditions, :live_data, :end_date].include?(k)
+                raise ArgumentError.new("Invalid option #{k}!") unless [:limit, :aggregation, :grouping, :date_column, :value_column, :conditions, :live_data, :end_date, :joins].include?(k)
               end
               raise ArgumentError.new("Invalid aggregation #{options[:aggregation]}!") if options[:aggregation] && ![:count, :sum, :maximum, :minimum, :average].include?(options[:aggregation])
               raise ArgumentError.new('The name of the column holding the value to sum has to be specified for aggregation :sum!') if [:sum, :maximum, :minimum, :average].include?(options[:aggregation]) && !options.key?(:value_column)

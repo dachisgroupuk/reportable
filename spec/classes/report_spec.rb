@@ -446,7 +446,7 @@ describe Saulabs::Reportable::Report do
     before do
       @begin_at = Time.now
       @end_at = 5.days.from_now
-      @created_at_column_clause = "#{ActiveRecord::Base.connection.quote_table_name('users')}.#{ActiveRecord::Base.connection.quote_column_name('created_at')}"
+      @created_at_column_clause = "created_at"
     end
 
     it 'should return conditions for date_column BETWEEN begin_at and end_at only when no custom conditions are specified and both begin and end date are specified' do

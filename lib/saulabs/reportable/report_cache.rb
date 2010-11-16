@@ -105,7 +105,21 @@ module Saulabs
         end
 
         def self.build_cached_data(report, grouping, conditions, reporting_period, value)
-          self.new(
+          options = cached_options(report, grouping, conditions, reporting_period, value)
+          cache = self.first(:conditions => {
+            :model_name => options[:model_name],
+            :report_name => options[:report_name],
+            :aggregation => options[:aggregation],
+            :reporting_period => options[:reporting_period],
+            :grouping => options[:grouping]
+          })
+          cache ||= self.new(options)
+          cache.value = value
+          cache
+        end
+
+        def self.cached_options(report, grouping, conditions, reporting_period, value)
+          {
             :model_name       => report.klass.to_s,
             :report_name      => report.name.to_s,
             :grouping         => grouping.identifier.to_s,
@@ -113,15 +127,15 @@ module Saulabs
             :conditions       => serialize_conditions(conditions),
             :reporting_period => reporting_period.date_time,
             :value            => value
-          )
+          }
         end
-        
+
         def self.serialize_conditions(conditions)
           if conditions.is_a?(Array)
             conditions.join
           elsif conditions.is_a?(Hash)
             conditions.map.sort{|x,y|x.to_s<=>y.to_s}.flatten.join
-          else 
+          else
             conditions.to_s
           end
         end

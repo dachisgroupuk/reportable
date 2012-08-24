@@ -14,14 +14,14 @@ pkg_files += Dir['spec/**/*.{rb,yml,opts}']
 Gem::Specification.new do |s|
 
   s.name    = %q{reportable}
-  s.version = '1.1.2'
+  s.version = '1.1.2.1'
 
   s.required_rubygems_version = Gem::Requirement.new('>= 0') if s.respond_to?(:required_rubygems_version=)
-  s.authors                   = ['Marco Otte-Witte', 'Martin Kavalar']
-  s.date                      = %q{2010-06-28}
-  s.email                     = %q{reportable@saulabs.com}
+  s.authors                   = ['Marco Otte-Witte', 'Martin Kavalar', 'Alex Stubbs']
+  s.date                      = %q{2012-08-24}
+  s.email                     = ['reportable@saulabs.com', 'alex@alex-s.co.uk']
   s.files                     = pkg_files
-  s.homepage                  = %q{http://github.com/saulabs/reportable}
+  s.homepage                  = %q{https://github.com/headshift/reportable}
   s.require_path              = 'lib'
   s.rubygems_version          = %q{1.3.0}
   s.has_rdoc                  = false
